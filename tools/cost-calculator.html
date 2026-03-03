@@ -1,43 +1,90 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>LLM Cost Calculator</title>
+  <title>Word & Cost Analyzer</title>
   <link rel="stylesheet" href="../style.css">
+  <!-- <style>
+    body { font-family: system-ui, sans-serif; padding: 2rem; max-width: 800px; margin: 0 auto; line-height: 1.5; }
+    textarea { width: 100%; height: 120px; padding: 12px; border: 1px solid #ccc; border-radius: 8px; font-family: monospace; box-sizing: border-box; }
+    button { background: #28a745; color: white; border: none; font-weight: bold; }
+    button:disabled { background: #ccc; }
+    #analysis { margin-top: 20px; padding: 15px; border-radius: 8px; background: #f4f4f9; border-left: 5px solid #28a745; }
+    .stat-row { margin-bottom: 5px; font-size: 1.1rem; }
+  </style> -->
 </head>
 <body>
 
-<h1>💰 LLM Cost Calculator</h1>
+<h1>🔍 Word & Cost Analyzer</h1>
 
-<input type="number" id="tokens" placeholder="Tokens per request">
-<br><br>
-<input type="number" id="requests" placeholder="Requests per day">
-<br><br>
+<textarea id="wordInput" placeholder="Enter text to analyze..."></textarea>
 
-<select id="model">
-  <option value="0.00001">GPT-4o (example price)</option>
-  <option value="0.000002">GPT-3.5 (example price)</option>
-</select>
+<div class="controls">
+  <select id="modelSelect">
+    <option value="gpt-4">GPT-4</option>
+    <option value="gpt-4o">GPT-4o</option>
+    <option value="gpt-3.5-turbo">GPT-3.5 Turbo</option>
+  </select>
+  <button id="analyzeBtn">Analyze & Calculate Cost</button>
+</div>
 
-<br><br>
-<button onclick="calculate()">Calculate</button>
-
-<div class="result" id="costResult"></div>
+<div id="analysis">Results will appear here...</div>
 
 <script>
-function calculate() {
-  const tokens = document.getElementById("tokens").value;
-  const requests = document.getElementById("requests").value;
-  const price = document.getElementById("model").value;
+  async function analyze() {
+    const text = document.getElementById("wordInput").value;
+    const model = document.getElementById("modelSelect").value;
+    const analysisDiv = document.getElementById("analysis");
+    const btn = document.getElementById("analyzeBtn");
 
-  const daily = tokens * requests * price;
-  const monthly = daily * 30;
+    if (!text.trim()) {
+      analysisDiv.innerHTML = "Please enter some text.";
+      return;
+    }
 
-  document.getElementById("costResult").innerHTML = `
-    Daily Cost: $${daily.toFixed(2)} <br>
-    Monthly Cost: $${monthly.toFixed(2)}
-  `;
-}
+    btn.disabled = true;
+    analysisDiv.innerHTML = "Processing...";
+
+    try {
+      // 1. Get Token Count first
+      const tokenRes = await fetch('https://web-production-7ac18.up.railway.app/tokens/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ "text": text })
+      });
+      const tokenData = await tokenRes.json();
+      const count = tokenData.token_count;
+
+      // 2. Get Cost using the token count and selected model
+      const costRes = await fetch('https://web-production-7ac18.up.railway.app/cost/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ "tokens": count, "model": model })
+      });
+      const costData = await costRes.json();
+
+      // Basic local stats
+      const charCount = text.length;
+      const byteLength = new TextEncoder().encode(text).length;
+
+      // Display Results
+      analysisDiv.innerHTML = `
+        <div class="stat-row"><strong>Tokens:</strong> ${count}</div>
+        <div class="stat-row"><strong>Estimated Cost:</strong> $${costData.cost || costData.estimated_cost || JSON.stringify(costData)}</div>
+        <hr>
+        <div class="stat-row">Characters: ${charCount}</div>
+        <div class="stat-row">Bytes: ${byteLength}</div>
+        <div class="stat-row">Leading Space: ${text.startsWith(" ") ? "Yes" : "No"}</div>
+      `;
+
+    } catch (error) {
+      analysisDiv.innerHTML = `<span style="color:red">Error: ${error.message}</span>`;
+    } finally {
+      btn.disabled = false;
+    }
+  }
+
+  document.getElementById("analyzeBtn").onclick = analyze;
 </script>
 
 </body>
