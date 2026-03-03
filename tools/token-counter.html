@@ -7,7 +7,7 @@
 </head>
 <body>
 
-<h1>🧮 Real Token Counter (OpenAI BPE)</h1>
+<h1>🧮 Real Token Counter</h1>
 
 <textarea id="inputText" placeholder="Paste your prompt here..."></textarea>
 <br>
@@ -15,14 +15,15 @@
 
 <div class="result" id="result"></div>
 
-<script type="module">
-  import { encoding_for_model } from "https://cdn.jsdelivr.net/npm/@dqbd/tiktoken@1.0.7/+esm";
+<script src="https://cdn.jsdelivr.net/npm/@dqbd/tiktoken@1.0.7/dist/tiktoken.js"></script>
 
-  const enc = encoding_for_model("gpt-4");
-
-  window.countTokens = function() {
+<script>
+  async function countTokens() {
     const text = document.getElementById("inputText").value;
+
+    const enc = await window.tiktoken.encoding_for_model("gpt-4");
     const tokens = enc.encode(text);
+
     document.getElementById("result").innerHTML =
       "Exact Token Count: " + tokens.length;
   }
