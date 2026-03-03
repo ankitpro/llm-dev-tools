@@ -7,26 +7,25 @@
 </head>
 <body>
 
-<h1>🧮 Real Token Counter</h1>
+<h1>🧮 Real OpenAI Token Counter</h1>
 
 <textarea id="inputText" placeholder="Paste your prompt here..."></textarea>
 <br>
-<button onclick="countTokens()">Count Tokens</button>
+<button id="countBtn">Count Tokens</button>
 
 <div class="result" id="result"></div>
 
-<script src="https://cdn.jsdelivr.net/npm/@dqbd/tiktoken@1.0.7/dist/tiktoken.js"></script>
+<script type="module">
+  import { get_encoding } from "https://cdn.jsdelivr.net/npm/@dqbd/tiktoken@1.0.7/+esm";
 
-<script>
-  async function countTokens() {
+  const enc = await get_encoding("cl100k_base");
+
+  document.getElementById("countBtn").onclick = () => {
     const text = document.getElementById("inputText").value;
-
-    const enc = await window.tiktoken.encoding_for_model("gpt-4");
     const tokens = enc.encode(text);
-
     document.getElementById("result").innerHTML =
       "Exact Token Count: " + tokens.length;
-  }
+  };
 </script>
 
 </body>
