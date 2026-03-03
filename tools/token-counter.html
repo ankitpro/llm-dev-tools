@@ -16,9 +16,11 @@
 <div class="result" id="result"></div>
 
 <script type="module">
-  import { get_encoding } from "https://cdn.jsdelivr.net/npm/@dqbd/tiktoken@1.0.7/+esm";
+  import { init, encoding_for_model } from "https://esm.sh/@dqbd/tiktoken@1.0.7";
 
-  const enc = await get_encoding("cl100k_base");
+  await init();
+
+  const enc = encoding_for_model("gpt-4");
 
   document.getElementById("countBtn").onclick = () => {
     const text = document.getElementById("inputText").value;
