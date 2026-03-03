@@ -44,3 +44,7 @@ button {
   margin-top: 20px;
   font-size: 1.2rem;
 }
+
+.error {
+  color: #dc3545;
+}

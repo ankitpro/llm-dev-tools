@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <title>Token Counter</title>
@@ -13,20 +13,49 @@
 <br>
 <button id="countBtn">Count Tokens</button>
 
-<div class="result" id="result"></div>
+<div id="result">The count will appear here...</div>
 
-<script type="module">
-  import { init, encoding_for_model } from "https://esm.sh/@dqbd/tiktoken@1.0.7";
+<script>
+  const countBtn = document.getElementById("countBtn");
+  const resultDiv = document.getElementById("result");
+  const inputText = document.getElementById("inputText");
 
-  await init();
+  countBtn.onclick = async () => {
+    const textValue = inputText.value.trim();
+    
+    if (!textValue) {
+      resultDiv.innerHTML = "Please enter some text.";
+      return;
+    }
 
-  const enc = encoding_for_model("gpt-4");
+    resultDiv.innerHTML = "Counting...";
+    countBtn.disabled = true;
 
-  document.getElementById("countBtn").onclick = () => {
-    const text = document.getElementById("inputText").value;
-    const tokens = enc.encode(text);
-    document.getElementById("result").innerHTML =
-      "Exact Token Count: " + tokens.length;
+    try {
+      const response = await fetch('https://web-production-7ac18.up.railway.app/tokens/', {
+        method: 'POST',
+        headers: {
+          'accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ "text": textValue })
+      });
+
+      if (!response.ok) throw new Error('API Error');
+
+      const data = await response.json();
+      
+      // FIX: Accessing the specific key "token_count" from your JSON response
+      const finalCount = data.token_count;
+
+      resultDiv.innerHTML = `<strong>Exact Token Count:</strong> ${finalCount}`;
+
+    } catch (error) {
+      resultDiv.innerHTML = `<span style="color:red">Error: Could not connect to the API.</span>`;
+      console.error(error);
+    } finally {
+      countBtn.disabled = false;
+    }
   };
 </script>
 
