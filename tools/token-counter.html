@@ -7,7 +7,7 @@
 </head>
 <body>
 
-<h1>🧮 Token Counter</h1>
+<h1>🧮 Real Token Counter (OpenAI BPE)</h1>
 
 <textarea id="inputText" placeholder="Paste your prompt here..."></textarea>
 <br>
@@ -15,16 +15,17 @@
 
 <div class="result" id="result"></div>
 
-<script>
-function countTokens() {
-  const text = document.getElementById("inputText").value;
+<script type="module">
+  import { encoding_for_model } from "https://cdn.jsdelivr.net/npm/@dqbd/tiktoken@1.0.7/+esm";
 
-  // Rough estimate: 1 token ≈ 4 characters
-  const estimatedTokens = Math.ceil(text.length / 4);
+  const enc = encoding_for_model("gpt-4");
 
-  document.getElementById("result").innerHTML =
-    "Estimated Tokens: " + estimatedTokens;
-}
+  window.countTokens = function() {
+    const text = document.getElementById("inputText").value;
+    const tokens = enc.encode(text);
+    document.getElementById("result").innerHTML =
+      "Exact Token Count: " + tokens.length;
+  }
 </script>
 
 </body>
