@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Word Token Analyzer</title>
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+
+<h1>🔍 Word Token Analyzer</h1>
+
+<textarea id="wordInput" placeholder="Try: Banana or  banana"></textarea>
+<br>
+<button onclick="analyze()">Analyze</button>
+
+<div class="result" id="analysis"></div>
+
+<script>
+function analyze() {
+  const text = document.getElementById("wordInput").value;
+
+  const charCount = text.length;
+  const byteLength = new TextEncoder().encode(text).length;
+
+  document.getElementById("analysis").innerHTML = `
+    Characters: ${charCount} <br>
+    Bytes: ${byteLength} <br>
+    Leading Space: ${text.startsWith(" ") ? "Yes" : "No"}
+  `;
+}
+</script>
+
+</body>
+</html>

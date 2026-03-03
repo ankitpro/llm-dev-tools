@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Token Counter</title>
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+
+<h1>🧮 Token Counter</h1>
+
+<textarea id="inputText" placeholder="Paste your prompt here..."></textarea>
+<br>
+<button onclick="countTokens()">Count Tokens</button>
+
+<div class="result" id="result"></div>
+
+<script>
+function countTokens() {
+  const text = document.getElementById("inputText").value;
+
+  // Rough estimate: 1 token ≈ 4 characters
+  const estimatedTokens = Math.ceil(text.length / 4);
+
+  document.getElementById("result").innerHTML =
+    "Estimated Tokens: " + estimatedTokens;
+}
+</script>
+
+</body>
+</html>

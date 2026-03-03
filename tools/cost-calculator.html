@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>LLM Cost Calculator</title>
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+
+<h1>💰 LLM Cost Calculator</h1>
+
+<input type="number" id="tokens" placeholder="Tokens per request">
+<br><br>
+<input type="number" id="requests" placeholder="Requests per day">
+<br><br>
+
+<select id="model">
+  <option value="0.00001">GPT-4o (example price)</option>
+  <option value="0.000002">GPT-3.5 (example price)</option>
+</select>
+
+<br><br>
+<button onclick="calculate()">Calculate</button>
+
+<div class="result" id="costResult"></div>
+
+<script>
+function calculate() {
+  const tokens = document.getElementById("tokens").value;
+  const requests = document.getElementById("requests").value;
+  const price = document.getElementById("model").value;
+
+  const daily = tokens * requests * price;
+  const monthly = daily * 30;
+
+  document.getElementById("costResult").innerHTML = `
+    Daily Cost: $${daily.toFixed(2)} <br>
+    Monthly Cost: $${monthly.toFixed(2)}
+  `;
+}
+</script>
+
+</body>
+</html>
