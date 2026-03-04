@@ -1,28 +1,42 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>LLM Dev Tools</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LLM Dev Tools | Home</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <h1>🚀 LLM Dev Tools</h1>
-  <p>Free developer tools for optimizing LLM usage.</p>
 
-  <div class="card">
-    <a href="tools/token-counter.html">Token Counter</a>
+<nav class="navbar">
+  <div class="nav-logo">🛠️ LLM Dev Tools</div>
+  <div class="nav-links">
+    <a href="index.html" class="active">Home</a>
+    <a href="tokens.html">Token Counter</a>
+    <a href="cost.html">Cost Analyzer</a>
   </div>
+</nav>
 
-  <div class="card">
-    <a href="tools/word-analyzer.html">Word Token Analyzer</a>
+<header class="hero">
+  <h1>Precision Tools for LLM Developers</h1>
+  <p>Analyze prompts, calculate tokens, and estimate costs across multiple models.</p>
+</header>
+
+<main class="container">
+  <div class="grid">
+    <a href="tokens.html" class="card">
+      <div class="card-icon">🔢</div>
+      <h3>Token Counter</h3>
+      <p>Get exact Tiktoken counts for your prompts using the latest OpenAI encodings.</p>
+    </a>
+
+    <a href="cost.html" class="card">
+      <div class="card-icon">💰</div>
+      <h3>Cost Analyzer</h3>
+      <p>Estimate API expenses for GPT-4o, GPT-4, and GPT-3.5 based on token volume.</p>
+    </a>
   </div>
+</main>
 
-  <div class="card">
-    <a href="tools/cost-calculator.html">LLM Cost Calculator</a>
-  </div>
-
-  <footer>
-    Built with ❤️ for AI developers
-  </footer>
 </body>
 </html>

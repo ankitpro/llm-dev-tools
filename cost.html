@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Cost Analyzer | LLM Dev Tools</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="nav-logo">🛠️ LLM Dev Tools</div>
+  <div class="nav-links">
+    <a href="index.html">Home</a>
+    <a href="tokens.html">Token Counter</a>
+    <a href="cost.html" class="active">Cost Analyzer</a>
+  </div>
+</nav>
+
+<div class="container">
+  <h1>💰 Cost Analyzer</h1>
+  <textarea id="costInput" placeholder="Paste text to calculate cost..."></textarea>
+  
+  <div class="controls">
+    <select id="modelSelect">
+      <option value="gpt-4o">GPT-4o</option>
+      <option value="gpt-4">GPT-4</option>
+      <option value="gpt-3.5-turbo">GPT-3.5 Turbo</option>
+    </select>
+    <button id="calcBtn">Calculate Cost</button>
+  </div>
+
+  <div id="costResult" class="result-box">Select a model and click analyze.</div>
+</div>
+
+<script>
+  document.getElementById("calcBtn").onclick = async () => {
+    const text = document.getElementById("costInput").value;
+    const model = document.getElementById("modelSelect").value;
+    const res = document.getElementById("costResult");
+
+    if(!text.trim()) return;
+    res.innerHTML = "Calculating...";
+
+    try {
+      // Step 1: Get Token Count
+      const tRes = await fetch('https://web-production-7ac18.up.railway.app/tokens/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ text })
+      });
+      const tData = await tRes.json();
+      
+      // Step 2: Get Cost
+      const cRes = await fetch('https://web-production-7ac18.up.railway.app/cost/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ tokens: tData.token_count, model: model })
+      });
+      const cData = await cRes.json();
+
+      res.innerHTML = `
+        <p><strong>Tokens:</strong> ${tData.token_count}</p>
+        <p><strong>Estimated Cost:</strong> $${cData.token_count || cData.cost || cData.estimated_cost}</p>
+      `;
+    } catch (e) {
+      res.innerHTML = "Error processing request.";
+    }
+  };
+</script>
+</body>
+</html>

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Token Counter | LLM Dev Tools</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="nav-logo">🛠️ LLM Dev Tools</div>
+  <div class="nav-links">
+    <a href="index.html">Home</a>
+    <a href="tokens.html" class="active">Token Counter</a>
+    <a href="cost.html">Cost Analyzer</a>
+  </div>
+</nav>
+
+<div class="container">
+  <h1>🔢 Token Counter</h1>
+  <textarea id="inputText" placeholder="Paste your prompt or code here..."></textarea>
+  <button id="countBtn">Count Tokens</button>
+
+  <div id="result" class="result-box">Result will appear here...</div>
+</div>
+
+<script>
+  const btn = document.getElementById("countBtn");
+  const res = document.getElementById("result");
+  
+  btn.onclick = async () => {
+    const text = document.getElementById("inputText").value;
+    if(!text.trim()) return res.innerText = "Please enter text.";
+    
+    res.innerHTML = "Counting...";
+    try {
+      const response = await fetch('https://web-production-7ac18.up.railway.app/tokens/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ text })
+      });
+      const data = await response.json();
+      res.innerHTML = `<strong>Total Tokens:</strong> ${data.token_count}`;
+    } catch (e) {
+      res.innerHTML = "Error connecting to API.";
+    }
+  };
+</script>
+</body>
+</html>
