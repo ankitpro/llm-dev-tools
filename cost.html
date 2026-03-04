@@ -22,12 +22,38 @@
   
   <div class="controls">
     <select id="modelSelect">
-      <option value="gpt-4o">GPT-4o</option>
-      <option value="gpt-4">GPT-4</option>
-      <option value="gpt-3.5-turbo">GPT-3.5 Turbo</option>
+        <!-- GPT-5 Family -->
+        <option value="gpt-5.2_input">GPT-5.2 Input</option>
+        <option value="gpt-5.2_output">GPT-5.2 Output</option>
+        <option value="gpt-5.2_pro_input">GPT-5.2 Pro Input</option>
+        <option value="gpt-5.2_pro_output">GPT-5.2 Pro Output</option>
+        <option value="gpt-5.0_input">GPT-5.0 Input</option>
+        <option value="gpt-5.0_output">GPT-5.0 Output</option>
+        <option value="gpt-5-mini_input">GPT-5 Mini Input</option>
+        <option value="gpt-5-mini_output">GPT-5 Mini Output</option>
+        <option value="gpt-5-nano_input">GPT-5 Nano Input</option>
+        <option value="gpt-5-nano_output">GPT-5 Nano Output</option>
+
+        <!-- GPT-4 Family -->
+        <option value="gpt-4.1_input">GPT-4.1 Input</option>
+        <option value="gpt-4.1_output">GPT-4.1 Output</option>
+        <option value="gpt-4.1-mini_input">GPT-4.1 Mini Input</option>
+        <option value="gpt-4.1-mini_output">GPT-4.1 Mini Output</option>
+        <option value="gpt-4.1-nano_input">GPT-4.1 Nano Input</option>
+        <option value="gpt-4.1-nano_output">GPT-4.1 Nano Output</option>
+
+        <!-- Realtime API -->
+        <option value="gpt-realtime_input">GPT Realtime Input</option>
+        <option value="gpt-realtime_output">GPT Realtime Output</option>
+        <option value="gpt-realtime-mini_input">GPT Realtime Mini Input</option>
+        <option value="gpt-realtime-mini_output">GPT Realtime Mini Output</option>
+
+        <!-- Legacy GPT-3.5 -->
+        <option value="gpt-3.5-turbo">GPT-3.5 Turbo Input</option>
+        <option value="gpt-3.5-turbo_output">GPT-3.5 Turbo Output</option>
     </select>
     <button id="calcBtn">Calculate Cost</button>
-  </div>
+    </div>
 
   <div id="costResult" class="result-box">Select a model and click analyze.</div>
 </div>
