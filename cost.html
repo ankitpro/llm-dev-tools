@@ -86,7 +86,7 @@
 
       res.innerHTML = `
         <p><strong>Tokens:</strong> ${tData.token_count}</p>
-        <p><strong>Estimated Cost:</strong> $${cData.token_count || cData.cost || cData.estimated_cost}</p>
+        <p><strong>Estimated Cost:</strong> ${cData.token_count || cData.cost || cData.estimated_cost}</p>
       `;
     } catch (e) {
       res.innerHTML = "Error processing request.";
